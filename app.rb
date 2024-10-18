@@ -1,5 +1,6 @@
 require "sinatra"
 require "sinatra/reloader"
+require "active_support/core_ext"
 
 get("/") do
   erb(:square)
@@ -21,10 +22,12 @@ get("/square/new/results") do
   @cal_title = "Square"
   @cal_type = "square"
   @cal_path = "square"
-  @results = []
+  
   number = params.fetch("number").to_i
-  @results.push(["Number", number])
   square = number ** 2.to_f
+
+  @results = []
+  @results.push(["Number", number])
   @results.push(["Square", square])
   erb(:results)
 end
@@ -33,10 +36,12 @@ get("/square_root/new/results") do
   @cal_title = "Square Root"
   @cal_type = "square root"
   @cal_path = "square_root"
-  @results = []
+  
   number = params.fetch("number").to_i
-  @results.push(["Number", number])
   square_root = number ** 0.5.to_f
+
+  @results = []
+  @results.push(["Number", number])
   @results.push(["Square Root", square_root])
   erb(:results)
 end
@@ -45,12 +50,20 @@ get("/payment/new/results") do
   @cal_title = "Payment"
   @cal_type = "payment"
   @cal_path = "payment"
+  
+  apr = params.fetch("apr").to_f
+  years = params.fetch("years").to_i
+  principal = params.fetch("principal").to_f
+
+  r = (apr / 100)/12
+  n = years * 12
+  monthly_payments = principal * (r * (1 + r) ** n) / ((1 + r) ** n - 1)
+  
   @results = []
-  number = params.fetch("apr")
-  @results.push(["APR", apr])
-  years = params.fetch("year").to_i
+  @results.push(["APR", apr.to_fs(:percentage, { :precision => 4 } )])
   @results.push(["Number of years", years])
-  principal = params.fetch("principal").to_f.round(2)
-  @results.push(["Principal", principal])
+  @results.push(["Principal", principal.to_fs(:currency)])
+  @results.push(["Monthly Payments", monthly_payments.to_fs(:currency)])
+
   erb(:results)
 end
