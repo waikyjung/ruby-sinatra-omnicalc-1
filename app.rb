@@ -1,6 +1,5 @@
 require "sinatra"
 require "sinatra/reloader"
-require "active_support/core_ext"
 
 get("/") do
   erb(:square)
@@ -27,7 +26,7 @@ get("/square/new/results") do
   @cal_type = "square"
   @cal_path = "square"
   
-  number = params.fetch("number").to_i
+  number = params.fetch("number").to_f
   square = number ** 2.to_f
 
   @results = []
@@ -41,7 +40,7 @@ get("/square_root/new/results") do
   @cal_type = "square root"
   @cal_path = "square_root"
   
-  number = params.fetch("number").to_i
+  number = params.fetch("number").to_f
   square_root = number ** 0.5.to_f
 
   @results = []
@@ -74,7 +73,7 @@ end
 
 get("/random/new/results") do
   @cal_title = "Random"
-  @cal_type = "random"
+  @cal_type = "random number"
   @cal_path = "random"
   
   minimum = params.fetch("minimum").to_f
