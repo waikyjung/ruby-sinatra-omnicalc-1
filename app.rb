@@ -17,7 +17,11 @@ end
 get("/payment/new") do
   erb(:payment)
 end
-  
+
+get("/random/new") do
+  erb(:random)
+end
+
 get("/square/new/results") do
   @cal_title = "Square"
   @cal_type = "square"
@@ -65,5 +69,21 @@ get("/payment/new/results") do
   @results.push(["Principal", principal.to_fs(:currency)])
   @results.push(["Monthly Payments", monthly_payments.to_fs(:currency)])
 
+  erb(:results)
+end
+
+get("/random/new/results") do
+  @cal_title = "Random"
+  @cal_type = "random"
+  @cal_path = "random"
+  
+  minimum = params.fetch("minimum").to_f
+  maximum = params.fetch("maximum").to_f
+  random_number = rand(minimum..maximum)
+
+  @results = []
+  @results.push(["Minimum", minimum])
+  @results.push(["Maximum", maximum])
+  @results.push(["Random Number", random_number])
   erb(:results)
 end
