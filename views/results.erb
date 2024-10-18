@@ -1,0 +1,14 @@
+<h1><%= @cal_title %> Results</h1>
+
+<dl>
+  <% @results.each do |label, value| %>
+  <dt>
+    <%= label %>
+  </dt>
+  <dd>
+    <%= value %>
+  </dd>
+  <% end %>
+</dl>
+
+<a href="/<%= @cal_path %>/new">Calculate another <%= @cal_type %></a>
